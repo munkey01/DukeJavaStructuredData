@@ -4,35 +4,30 @@
 
 public class testCaesarCipher {
 
-    CaesarCipher cc;
-    private String message;
-    private int key;
+    //encrypt and decrypt = success
+    //decrypt2keys, encrypt2keys = success
+    //decryptKeyUnknown, countLettersInMessage = success
 
-    testCaesarCipher(String input, int shiftKey) {
-        cc = new CaesarCipher();
-        setMessage(input);
-        setKey(shiftKey);
+    public static void main(String[] args) {
+        CaesarCipher cc = new CaesarCipher(1);
+        
+        String encrypted = cc.encrypt("ABcd! 1", 1);
+        System.out.println(encrypted);
+        String decrypted = cc.decrypt(encrypted, 1);
+        System.out.println(decrypted);
+
+
+        String encryptedMsg2Keys = cc.encryptTwoKeys("ABcd! 1", 1, 2);
+        System.out.println(encryptedMsg2Keys);
+
+        System.out.println(cc.decryptTwoKeys("BDdF! 1", 1, 2));
+        
+
+        String eMessage = "ABCDEEEEE";
+        String encryptedEMessage = cc.encrypt(eMessage,1);
+        System.out.println("Encrypted: " + encryptedEMessage);
+        String decryptedMsg = cc.decryptKeyUnknown(encryptedEMessage);
+        System.out.println(decryptedMsg);
     }
-
-    void setMessage(String input) {
-        message = input;
-    }
-
-    String getMessage() {
-        return this.message;
-    }
-
-    void setKey(int shiftKey) {
-        key = shiftKey;
-    }
-
-    int getKey() {
-        return this.key;
-    }
-
-    void testEncrypt() {
-        System.out.println("Running testEncrypt.\nMessage: \t" + getMessage() + "\nKey:\t" +getKey() + "\n" + "Encrypted message: ");
-        System.out.println(cc.encrypt(getMessage(), getKey()));
-   }
 
 }
