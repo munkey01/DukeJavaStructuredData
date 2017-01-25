@@ -16,7 +16,7 @@ public class CaesarCipher {
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     }
 
-    String decrypt(String encrypted, int key) {
+    private String decrypt(String encrypted, int key) {
         return encrypt(encrypted, 26-key); //decrypting is just a shifted encrypt
     }
 
@@ -37,7 +37,7 @@ public class CaesarCipher {
         return decryptedStr.toString();
     }
 
-    int[] countLettersInMessage(String message) {   //needs to handle capital and lowercase letters
+    private int[] countLettersInMessage(String message) {   //needs to handle capital and lowercase letters
         int[] letterCounts = new int[25];
         int length = message.length();
         for(int i = 0; i < length; i++) {
@@ -69,12 +69,36 @@ public class CaesarCipher {
         int key = alphabet.indexOf('e') - alphabet.indexOf(mostCommonLetter); //other direction?
 
         //call decrypt with calculated shift value
-        System.out.println("Assuming shift of " + key + ". Attempting decryption.\n" + decrypt(message, key));
+        //System.out.println("Assuming shift of " + key + ". Attempting decryption.\nPossible decrypted message:\t" + decrypt(message, key));
 
         //ask user if it is correct, if it is not, then assume second highest count is 'e', continue until success or user exit
+        return decrypt(message, key);
     }
 
-    String encrypt(String message, int key) { //needs to handle capital and lowercase letters
-        //insert encrypt method body
+    private String encrypt(String message, int key) { //needs to handle capital and lowercase letters
+        StringBuilder encryptedStr = new StringBuilder();
+
+        for(int i = 0; i < message.length(); i++) {
+
+            char currentLetter = message.charAt(i);
+
+            //find index of letter in shifted alphabet, must do this as uppercase version
+            int indexOfChar = alphabet.indexOf(Character.toUpperCase(currentLetter));
+
+            if(indexOfChar == -1) {
+                encryptedStr.append(currentLetter);
+                continue;
+            }
+            char charToAdd = shiftedAlphabet.charAt(indexOfChar);
+
+            if(Character.isLowerCase(currentLetter)) {
+                //add lowercase shifted letter to encrypted string if original was lowercase
+                charToAdd = Character.toLowerCase(charToAdd);
+            }
+
+            encryptedStr.append(charToAdd);
+        }
+        System.out.println("Encrypted message: " + encryptedStr.toString());
+        return encryptedStr.toString();
     }
 }
