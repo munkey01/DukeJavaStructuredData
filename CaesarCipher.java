@@ -37,26 +37,28 @@ public class CaesarCipher {
         return letterCounts;
     }
 
-    String decryptKeyUnknown(String message) {      //needs to handle capital and lowercase letters
+    int findUnknownKey(String message) {
         //call countLettersInMessage
         int[] letterCounts = findLetterFrequency(message);
 
         //find highest count
-        //int length = alphabet.length();
         int max = 0;
         char mostCommonLetter = 'A';
-        for(int i = 0; i < 25; i++) {
-            if(letterCounts[i] > max) {
+        for (int i = 0; i < 25; i++) {
+            if (letterCounts[i] > max) {
                 max = letterCounts[i];
                 mostCommonLetter = alphabet.charAt(i);
             }
         }
-
         //assume highest count is 'e', do math to shift appropriately
         int key = alphabet.indexOf(mostCommonLetter) - alphabet.indexOf('E');
+        System.out.println("Most common letter: " + mostCommonLetter);
+        return key;
+    }
 
-        System.out.println("Most common letter: " + mostCommonLetter + "\nExpected shift: " + key);
-
+    String decryptKeyUnknown(String message) {      //needs to handle capital and lowercase letters
+        int key = findUnknownKey(message);
+        System.out.println("Calculated shift: " + key);
         return decrypt(message, key);
     }
 
@@ -102,6 +104,25 @@ public class CaesarCipher {
 
     String decrypt(String encrypted, int key) {
         return encrypt(encrypted, (26-key)); //decrypting is just a shifted encrypt
+    }
+
+    String decryptTwoKeysUnknown(String encryptedStr) {
+        StringBuilder string1 = new StringBuilder();
+        StringBuilder string2 = new StringBuilder();
+
+        for(int i = 0; i < encryptedStr.length()-1; i++) {
+            char currentLetter = encryptedStr.charAt(i);
+            if(i % 2 == 0) {
+                string1.append(currentLetter);
+            }
+            else if(i % 2 == 1) {
+                string2.append(currentLetter);
+            }
+        }
+        int key1 = findUnknownKey(string1.toString());
+        int key2 = findUnknownKey(string2.toString());
+
+        return decryptTwoKeys(encryptedStr, key1, key2);
     }
 
 }
