@@ -9,41 +9,28 @@ public class CaesarCipher {
 
     CaesarCipher(int key) {
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        shiftedAlphabet = alphabet.substring(key) + alphabet.substring(0,key);
+        setShift(key);
     }
 
     CaesarCipher() {
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     }
 
-    private String decrypt(String encrypted, int key) {
-        return encrypt(encrypted, 26-key); //decrypting is just a shifted encrypt
+    void setShift(int key) {
+        shiftedAlphabet = alphabet.substring(key) + alphabet.substring(0,key);
     }
 
     String decryptTwoKeys(String encryptedStr, int key1, int key2) {  //needs to handle capital and lowercase letters
-        int length = encryptedStr.length();
-        StringBuilder decryptedStr = new StringBuilder();
-        for(int i = 0; i < length; i++) {
-            char currentLetter = encryptedStr.charAt(i);
-            String decryptedLetter = null;
-            if(i % 2 == 0) {
-                decryptedLetter = decrypt(Character.toString(currentLetter), key1); //Check if the key to modulo comparision is correct
-            }
-            else if(i % 2 == 1) {
-                decryptedLetter = decrypt(Character.toString(currentLetter), key2); //See if statement
-            }
-            decryptedStr.append(decryptedLetter);
-        }
-        return decryptedStr.toString();
+        return encryptTwoKeys(encryptedStr,26-key1,26-key2);
     }
 
-    private int[] countLettersInMessage(String message) {   //needs to handle capital and lowercase letters
-        int[] letterCounts = new int[25];
+    int[] findLetterFrequency(String message) {   //needs to handle capital and lowercase letters
+        int[] letterCounts = new int[26];
         int length = message.length();
         for(int i = 0; i < length; i++) {
             char currentLetter = message.charAt(i); //should I split between declaration and assignment?
             int letterIndexInAlphabet = alphabet.indexOf(currentLetter);
-            if(letterIndexInAlphabet != -1) {
+            if (letterIndexInAlphabet != -1) {
                 letterCounts[letterIndexInAlphabet]++;
             }
         }
@@ -52,13 +39,13 @@ public class CaesarCipher {
 
     String decryptKeyUnknown(String message) {      //needs to handle capital and lowercase letters
         //call countLettersInMessage
-        int[] letterCounts = countLettersInMessage(message);
+        int[] letterCounts = findLetterFrequency(message);
 
         //find highest count
-        int length = alphabet.length();
+        //int length = alphabet.length();
         int max = 0;
         char mostCommonLetter = 'A';
-        for(int i = 0; i < length; i++) {
+        for(int i = 0; i < 25; i++) {
             if(letterCounts[i] > max) {
                 max = letterCounts[i];
                 mostCommonLetter = alphabet.charAt(i);
@@ -66,39 +53,55 @@ public class CaesarCipher {
         }
 
         //assume highest count is 'e', do math to shift appropriately
-        int key = alphabet.indexOf('e') - alphabet.indexOf(mostCommonLetter); //other direction?
+        int key = alphabet.indexOf(mostCommonLetter) - alphabet.indexOf('E');
 
-        //call decrypt with calculated shift value
-        //System.out.println("Assuming shift of " + key + ". Attempting decryption.\nPossible decrypted message:\t" + decrypt(message, key));
+        System.out.println("Most common letter: " + mostCommonLetter + "\nExpected shift: " + key);
 
-        //ask user if it is correct, if it is not, then assume second highest count is 'e', continue until success or user exit
         return decrypt(message, key);
     }
 
-    private String encrypt(String message, int key) { //needs to handle capital and lowercase letters
+    String encrypt(String message, int key) { //needs to handle capital and lowercase letters
+        setShift(key);
         StringBuilder encryptedStr = new StringBuilder();
 
         for(int i = 0; i < message.length(); i++) {
-
             char currentLetter = message.charAt(i);
-
             //find index of letter in shifted alphabet, must do this as uppercase version
             int indexOfChar = alphabet.indexOf(Character.toUpperCase(currentLetter));
-
             if(indexOfChar == -1) {
                 encryptedStr.append(currentLetter);
                 continue;
             }
             char charToAdd = shiftedAlphabet.charAt(indexOfChar);
-
             if(Character.isLowerCase(currentLetter)) {
                 //add lowercase shifted letter to encrypted string if original was lowercase
                 charToAdd = Character.toLowerCase(charToAdd);
             }
-
             encryptedStr.append(charToAdd);
         }
-        System.out.println("Encrypted message: " + encryptedStr.toString());
+
         return encryptedStr.toString();
     }
+
+    String encryptTwoKeys(String message, int key1, int key2) {
+        int length = message.length();
+        StringBuilder encryptedStr = new StringBuilder();
+        for(int i = 0; i < length; i++) {
+            char currentLetter = message.charAt(i);
+            String encryptedLetter = null;
+            if(i % 2 == 0) {
+                encryptedLetter = encrypt(Character.toString(currentLetter), key1); //Check if the key to modulo comparision is correct
+            }
+            else if(i % 2 == 1) {
+                encryptedLetter = encrypt(Character.toString(currentLetter), key2); //See if statement
+            }
+            encryptedStr.append(encryptedLetter);
+        }
+        return encryptedStr.toString();
+    }
+
+    String decrypt(String encrypted, int key) {
+        return encrypt(encrypted, (26-key)); //decrypting is just a shifted encrypt
+    }
+
 }
