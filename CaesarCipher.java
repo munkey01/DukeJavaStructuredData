@@ -1,5 +1,8 @@
 /**
  * Created by jgrant on 1/24/2017.
+ *
+ * CaesarCipher class contains encryption and decryption methods related to Caesar ciphers of various 
+ * known and unknown alphabetic shifts. 
  */
 
 public class CaesarCipher {
@@ -17,19 +20,22 @@ public class CaesarCipher {
     }
 
     void setShift(int key) {
-        shiftedAlphabet = alphabet.substring(key) + alphabet.substring(0,key);
+        while(key > 26) {
+            key = key-26; //adjust key to within alphabetic length range
+        }
+        shiftedAlphabet = alphabet.substring(key) + alphabet.substring(0, key);
     }
 
-    String decryptTwoKeys(String encryptedStr, int key1, int key2) {  //needs to handle capital and lowercase letters
+    String decryptTwoKeys(String encryptedStr, int key1, int key2) {
         return encryptTwoKeys(encryptedStr,26-key1,26-key2);
     }
 
-    int[] findLetterFrequency(String message) {   //needs to handle capital and lowercase letters
+    int[] findLetterFrequency(String message) {
         int[] letterCounts = new int[26];
         int length = message.length();
         for(int i = 0; i < length; i++) {
-            char currentLetter = message.charAt(i); //should I split between declaration and assignment?
-            int letterIndexInAlphabet = alphabet.indexOf(currentLetter);
+            char currentLetter = message.charAt(i);
+            int letterIndexInAlphabet = alphabet.indexOf(Character.toUpperCase(currentLetter));
             if (letterIndexInAlphabet != -1) {
                 letterCounts[letterIndexInAlphabet]++;
             }
@@ -38,10 +44,9 @@ public class CaesarCipher {
     }
 
     int findUnknownKey(String message) {
-        //call countLettersInMessage
         int[] letterCounts = findLetterFrequency(message);
 
-        //find highest count
+        //find letter of highest count
         int max = 0;
         char mostCommonLetter = 'A';
         for (int i = 0; i < 25; i++) {
@@ -50,19 +55,19 @@ public class CaesarCipher {
                 mostCommonLetter = alphabet.charAt(i);
             }
         }
-        //assume highest count is 'e', do math to shift appropriately
+        //assume highest count represents decrypted 'e', shift alphabet appropriately
         int key = alphabet.indexOf(mostCommonLetter) - alphabet.indexOf('E');
-        System.out.println("Most common letter: " + mostCommonLetter);
+        System.out.println("Most common letter: " + mostCommonLetter + "\nCalculated key: " + key);
         return key;
     }
 
-    String decryptKeyUnknown(String message) {      //needs to handle capital and lowercase letters
+    String decryptKeyUnknown(String message) {
         int key = findUnknownKey(message);
         System.out.println("Calculated shift: " + key);
         return decrypt(message, key);
     }
 
-    String encrypt(String message, int key) { //needs to handle capital and lowercase letters
+    String encrypt(String message, int key) {
         setShift(key);
         StringBuilder encryptedStr = new StringBuilder();
 
@@ -92,10 +97,10 @@ public class CaesarCipher {
             char currentLetter = message.charAt(i);
             String encryptedLetter = null;
             if(i % 2 == 0) {
-                encryptedLetter = encrypt(Character.toString(currentLetter), key1); //Check if the key to modulo comparision is correct
+                encryptedLetter = encrypt(Character.toString(currentLetter), key1);
             }
             else if(i % 2 == 1) {
-                encryptedLetter = encrypt(Character.toString(currentLetter), key2); //See if statement
+                encryptedLetter = encrypt(Character.toString(currentLetter), key2);
             }
             encryptedStr.append(encryptedLetter);
         }
