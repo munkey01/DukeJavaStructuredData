@@ -7,7 +7,7 @@
 
 public class CaesarCipher {
 
-    private String alphabet;
+    final private String alphabet;
     private String shiftedAlphabet;
 
     CaesarCipher(int key) {
