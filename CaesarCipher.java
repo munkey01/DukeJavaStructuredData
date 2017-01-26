@@ -1,8 +1,8 @@
 /**
  * Created by jgrant on 1/24/2017.
  *
- * CaesarCipher class contains encryption and decryption methods related to Caesar ciphers of various 
- * known and unknown alphabetic shifts. 
+ * CaesarCipher class contains encryption and decryption methods related to Caesar ciphers of various
+ * known and unknown alphabetic shifts.
  */
 
 public class CaesarCipher {
@@ -27,7 +27,7 @@ public class CaesarCipher {
     }
 
     String decryptTwoKeys(String encryptedStr, int key1, int key2) {
-        return encryptTwoKeys(encryptedStr,26-key1,26-key2);
+        return encryptTwoKeys(encryptedStr,(26 - key1),(26 - key2));
     }
 
     int[] findLetterFrequency(String message) {
@@ -113,7 +113,7 @@ public class CaesarCipher {
     }
 
     String decrypt(String encrypted, int key) {
-        return encrypt(encrypted, (26-key));            //decrypting is just a shifted encrypt
+        return encrypt(encrypted, (26 - key));            //decrypting is just a shifted encrypt
     }
 
     String decryptTwoKeysUnknown(String encryptedStr) {
