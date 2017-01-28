@@ -1,3 +1,7 @@
+package CaesarCipher;
+
+import CaesarCipher.CaesarCipher;
+
 /**
  * Created by joey on 1/25/17.
  */
