@@ -10,7 +10,7 @@ public class testCodonCount {
 
     public static void main(String[] args) {
         CodonCount cc = new CodonCount();
-        cc.buildCodonMap(0, "atgctagct");
+        cc.buildCodonMap(0, "atgctagct");             //NULL POINTER EXCEPTION
     }
 
 
