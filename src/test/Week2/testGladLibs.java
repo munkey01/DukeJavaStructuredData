@@ -1,4 +1,6 @@
-package GladLib;
+package Week2;
+
+import src.java.Week2.GladLib;
 
 /**
  * Created by jgrant on 1/27/2017.

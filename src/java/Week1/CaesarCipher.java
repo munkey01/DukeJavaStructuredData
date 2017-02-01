@@ -1,9 +1,9 @@
-package CaesarCipher;
+package src.java.Week1;
 
 /**
  * Created by jgrant on 1/24/2017.
  *
- * CaesarCipher class contains encryption and decryption methods related to Caesar ciphers of various
+ * Week1 class contains encryption and decryption methods related to Caesar ciphers of various
  * known and unknown alphabetic shifts.
  */
 
@@ -12,7 +12,7 @@ public class CaesarCipher {
     final private String alphabet;
     private String shiftedAlphabet;
 
-    CaesarCipher(int key) {
+    public CaesarCipher(int key) {
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         setShift(key);
     }
@@ -28,7 +28,7 @@ public class CaesarCipher {
         shiftedAlphabet = alphabet.substring(key) + alphabet.substring(0, key);
     }
 
-    String decryptTwoKeys(String encryptedStr, int key1, int key2) {
+    public String decryptTwoKeys(String encryptedStr, int key1, int key2) {
         return encryptTwoKeys(encryptedStr,(26 - key1),(26 - key2));
     }
 
@@ -46,7 +46,7 @@ public class CaesarCipher {
         return letterCounts;
     }
 
-    int findUnknownKey(String message) {
+    public int findUnknownKey(String message) {
         int[] letterCounts = findLetterFrequency(message);
         int max = 0;
         char mostCommonLetter = 'A';
@@ -64,14 +64,14 @@ public class CaesarCipher {
         return key;
     }
 
-    String decryptKeyUnknown(String message) {
+    public String decryptKeyUnknown(String message) {
         int key = findUnknownKey(message);
 
         System.out.println("Calculated shift: " + key);
         return decrypt(message, key);
     }
 
-    String encrypt(String message, int key) {
+    public String encrypt(String message, int key) {
         StringBuilder encryptedStr = new StringBuilder();
         setShift(key);
 
@@ -96,7 +96,7 @@ public class CaesarCipher {
         return encryptedStr.toString();
     }
 
-    String encryptTwoKeys(String message, int key1, int key2) {
+    public String encryptTwoKeys(String message, int key1, int key2) {
         int length = message.length();
         StringBuilder encryptedStr = new StringBuilder();
         String encryptedLetter = new String();
@@ -114,11 +114,11 @@ public class CaesarCipher {
         return encryptedStr.toString();
     }
 
-    String decrypt(String encrypted, int key) {
+    public String decrypt(String encrypted, int key) {
         return encrypt(encrypted, (26 - key));            //decrypting is just a shifted encrypt
     }
 
-    String decryptTwoKeysUnknown(String encryptedStr) {
+    public String decryptTwoKeysUnknown(String encryptedStr) {
         StringBuilder string1 = new StringBuilder();
         StringBuilder string2 = new StringBuilder();
         char currentLetter;

@@ -1,10 +1,10 @@
 /**
  * Created by jgrant on 1/27/2017.
  * This class uses a story template to create a randomized story
- * referred to as a GladLib (or a MadLib).
+ * referred to as a Week2 (or a MadLib).
  */
 
-package GladLib;
+package src.java.Week2;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,11 +25,11 @@ public class GladLib {
     private final ArrayList<String> verbs = new ArrayList<>();
     private final ArrayList<String> adjectives = new ArrayList<>();
 
-    GladLib() {
+    public GladLib() {
         this("story_template.txt");
     }
 
-    GladLib(String templateFile) {
+    public GladLib(String templateFile) {
         storyTemplateFileName = templateFile;
         try {
             loadWords(nouns, nounsFile);
@@ -65,7 +65,7 @@ public class GladLib {
 
     /* Takes story template, calls pickRandomWord() for each tagged word. Replaces word
      * with return value from pickRandomWord. Include catch for error from pickRandomWord */
-    protected String createStory() {
+    public String createStory() {
         StringBuilder story = new StringBuilder();
         for (String word : storyTemplate.split("\\s")) {
             switch (word) {

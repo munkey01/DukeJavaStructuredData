@@ -1,4 +1,6 @@
-package GladLib;
+package Week2;
+
+import src.java.Week2.WordFrequencies;
 
 /**
  * Created by joey on 1/28/17.

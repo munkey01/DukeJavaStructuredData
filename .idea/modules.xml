@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JavaArrayListStructuredDataCoursera.iml" filepath="$PROJECT_DIR$/JavaArrayListStructuredDataCoursera.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DukeJavaStructuredData.iml" filepath="$PROJECT_DIR$/DukeJavaStructuredData.iml" />
     </modules>
   </component>
 </project>

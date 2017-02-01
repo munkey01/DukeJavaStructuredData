@@ -1,7 +1,6 @@
-package GladLib;
+package src.java.Week2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import edu.duke.FileResource;
 
@@ -18,7 +17,7 @@ public class WordFrequencies {
     private ArrayList<String> myWords;
     private ArrayList<Integer> myFreqs;
 
-    WordFrequencies() {
+    public WordFrequencies() {
         myWords = new ArrayList<>();
         myFreqs = new ArrayList<>();
     }
@@ -30,7 +29,8 @@ public class WordFrequencies {
      * Each time word in  myWords is encountered, myFreq(k) is
      * incremented by 1.
      *  */
-    void findUnique() {
+
+    public void findUnique() {
         FileResource file = new FileResource();
         for (String word : file.words()) {
             int index = myWords.indexOf(word.toLowerCase());
@@ -38,7 +38,7 @@ public class WordFrequencies {
                 int value = myFreqs.get(index);
                 myFreqs.add(index, value+1);    //increment value at index by 1
             } else if (index == -1) {
-                myWords.add(word.toLowerCase());                      //assuming myWords and MyFreqs are same size
+                myWords.add(word.toLowerCase());        //assuming myWords and MyFreqs are same size
                 myFreqs.add(1);
             }
         }
@@ -65,14 +65,14 @@ public class WordFrequencies {
      * Will also determine and print word that occurs most often
      * in selected file and how many times it occurs.
      * */
-    void tester() {
+    public void tester() {
         findUnique();
         int size = myWords.size();
         int indexOfMax = findIndexOfMax();
         System.out.println("Number of unique words: " + size);
-        for (int i = 0; i < size-1; i++) {
+        /*for (int i = 0; i < size-1; i++) {
             System.out.println(myFreqs.get(i) + " " + myWords.get(i));
-        }
+        }*/
         System.out.println("The word that occurs most often and its count are: "
                             + myWords.get(indexOfMax) + " " + myFreqs.get(indexOfMax));
     }

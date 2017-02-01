@@ -1,6 +1,6 @@
-package CaesarCipher;
+package Week1;
 
-import CaesarCipher.CaesarCipher;
+import src.java.Week1.CaesarCipher;
 
 /**
  * Created by joey on 1/25/17.
