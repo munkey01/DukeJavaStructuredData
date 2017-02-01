@@ -1,4 +1,4 @@
-package GladLibs;
+package GladLib;
 
 /**
  * Created by jgrant on 1/27/2017.

@@ -4,7 +4,7 @@
  * referred to as a GladLib (or a MadLib).
  */
 
-package GladLibs;
+package GladLib;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class GladLib {
 
-    private final String path = "\\data\\";
+    private final String path = "/resources/";
     private final String nounsFile = "nouns.txt";
     private final String verbsFile = "verbs.txt";
     private final String adjFile = "adjectives.txt";
@@ -70,16 +70,16 @@ public class GladLib {
         for (String word : storyTemplate.split("\\s")) {
             switch (word) {
                 case "<noun>" :
-                    story.append(pickRandomWord(nouns));
+                    story.append(pickRandomWord(nouns) + " ");
                     continue;
                 case "<verb>" :
-                    story.append(pickRandomWord(verbs));
+                    story.append(pickRandomWord(verbs) + " ");
                     continue;
                 case "<adjective>" :
-                    story.append(pickRandomWord(adjectives));
+                    story.append(pickRandomWord(adjectives) + " ");
                     continue;
                 default:
-                    story.append(word);
+                    story.append(word + " ");
             }
         }
         return story.toString();
