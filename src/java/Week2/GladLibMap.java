@@ -1,7 +1,8 @@
 /**
- * Created by jgrant on 1/27/2017.
- * This class uses a story template to create a randomized story
- * referred to as a Week2 (or a MadLib).
+ * Created by jgrant on 2/2/2017.
+ * This class is a version of GladLib class using maps instead of parallel ArrayLists.
+ *
+ * As of 2/2/2017: Class is not functional and has not been completed yet.
  */
 
 package src.java.Week2;
@@ -11,9 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
-public class GladLib {
+public class GladLibMap {
 
     private final String path = "/resources/";
     private final String nounsFile = "nouns.txt";
@@ -21,15 +23,13 @@ public class GladLib {
     private final String adjFile = "adjectives.txt";
     private final String storyTemplateFileName;
     private String storyTemplate;
-    private final ArrayList<String> nouns = new ArrayList<>();
-    private final ArrayList<String> verbs = new ArrayList<>();
-    private final ArrayList<String> adjectives = new ArrayList<>();
+    private HashMap<String, ArrayList<String>> wordMap = new HashMap<>();
 
-    public GladLib() {
+    public GladLibMap() {
         this("story_template.txt");
     }
 
-    public GladLib(String templateFile) {
+    public GladLibMap(String templateFile) {
         storyTemplateFileName = templateFile;
         try {
             loadWords(nouns, nounsFile);
