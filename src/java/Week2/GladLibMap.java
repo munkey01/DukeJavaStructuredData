@@ -7,20 +7,15 @@
 
 package src.java.Week2;
 
+import edu.duke.DirectoryResource;
+import edu.duke.FileResource;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class GladLibMap {
 
-    private final String path = "/resources/";
-    private final String nounsFile = "nouns.txt";
-    private final String verbsFile = "verbs.txt";
-    private final String adjFile = "adjectives.txt";
     private final String storyTemplateFileName;
     private String storyTemplate;
     private HashMap<String, ArrayList<String>> wordMap = new HashMap<>();
@@ -32,35 +27,40 @@ public class GladLibMap {
     public GladLibMap(String templateFile) {
         storyTemplateFileName = templateFile;
         try {
-            loadWords(nouns, nounsFile);
-            loadWords(verbs, verbsFile);
-            loadWords(adjectives, adjFile);
+            loadWordFiles();
             loadStoryTemplate();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private String readFile(String path) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, "Cp1252");
+    private void loadWordFiles() {
+        System.out.println("Select all files that you wish to use.");
+        DirectoryResource dir = new DirectoryResource();
+        for (File f : dir.selectedFiles()) {
+            String fileContent = new FileResource(f).asString();
+            loadWords(fileContent);
+        }
     }
 
-    private void loadWords(ArrayList<String> list, String filename) throws IOException  {
-        String fileAsString = readFile(path + filename);
-        Collections.addAll(list, fileAsString.split("\\s"));
+    private void loadWords(String fileContent) {
+        ArrayList<String> allWords = new ArrayList<>(Arrays.asList(fileContent.split("\\s")));
+        String wordType = allWords.get(0);
+        allWords.remove(0);
+        wordMap.put(wordType, allWords);
     }
 
     private void loadStoryTemplate() throws IOException {
-        storyTemplate = readFile(path + storyTemplateFileName);
+        System.out.println("Choose story template file.");
+        storyTemplate = new FileResource().asString().trim();
     }
 
     /* Will pick random word from given type and return the word as a string. */
-    private String pickRandomWord(ArrayList<String> wordList) {
+    private String pickRandomWord(String wordType) {
         Random rand = new Random();
-        int size = wordList.size();
-        int index = rand.nextInt(size);
-        return wordList.get(index);
+        ArrayList<String> currWords = wordMap.get(wordType.trim());
+        int index = rand.nextInt(currWords.size());
+        return currWords.get(index);
     }
 
     /* Takes story template, calls pickRandomWord() for each tagged word. Replaces word
@@ -68,18 +68,10 @@ public class GladLibMap {
     public String createStory() {
         StringBuilder story = new StringBuilder();
         for (String word : storyTemplate.split("\\s")) {
-            switch (word) {
-                case "<noun>" :
-                    story.append(pickRandomWord(nouns) + " ");
-                    continue;
-                case "<verb>" :
-                    story.append(pickRandomWord(verbs) + " ");
-                    continue;
-                case "<adjective>" :
-                    story.append(pickRandomWord(adjectives) + " ");
-                    continue;
-                default:
-                    story.append(word + " ");
+            if (wordMap.containsKey(word)) {
+                story.append(pickRandomWord(word)+ " ");
+            } else {
+                story.append(word + " ");
             }
         }
         return story.toString();
