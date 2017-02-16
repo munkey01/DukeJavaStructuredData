@@ -11,6 +11,7 @@ public class testWordInFiles {
     public static void main(String[] args) {
         WordInFiles test = new WordInFiles();
         test.tester();
+        test.printFilesIn("red");;
     }
 
 

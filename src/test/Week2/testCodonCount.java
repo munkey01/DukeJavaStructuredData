@@ -9,7 +9,9 @@ import src.java.Week2.CodonCount;
 public class testCodonCount {
 
     public static void main(String[] args) {
-        new CodonCount();
+
+        CodonCount cc = new CodonCount();
+        cc.printCodonCounts(6,6);
     }
 
 }

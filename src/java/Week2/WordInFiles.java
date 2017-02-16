@@ -24,6 +24,7 @@ public class WordInFiles {
             ArrayList<String> files = wordLocations.get(word);
             System.out.println(word + " " + String.join(" ", files));
         }
+        System.out.println("Number of unique words: " + wordLocations.size());
     }
 
     /* Stores each word and filenames in which it is found. */
@@ -56,7 +57,7 @@ public class WordInFiles {
     }
 
     /* Finds and returns the maximum number of files in which any word is found. */
-    private int maxNumber() {
+    public int maxNumber() {
         int max = 0;
         for (Map.Entry e : wordLocations.entrySet()) {
             String word = e.getKey().toString();
@@ -69,7 +70,7 @@ public class WordInFiles {
     }
 
     /*Returns ArrayList of words that are found in exactly n files. */
-    private ArrayList<String> wordsInNumFiles(int number) {
+    public ArrayList<String> wordsInNumFiles(int number) {
         ArrayList<String> words = new ArrayList<>();
         for (Map.Entry entry : wordLocations.entrySet()) {
             ArrayList<String> fileNameList = new ArrayList<>();
@@ -87,7 +88,7 @@ public class WordInFiles {
     }
 
     /* Print names of all files that word is found in. */
-    private void printFilesIn(String word) {
+    public void printFilesIn(String word) {
         if (wordLocations.containsKey(word)) {
             for (String filename : wordLocations.get(word)) {
                 System.out.println(filename);

@@ -70,7 +70,7 @@ public class CodonCount {
         mostCommonCodonCount = max;
     }
 
-    private void printCodonCounts(int min, int max) {
+    public void printCodonCounts(int min, int max) {
         for (String codon : codonCount.keySet()) {
             int count = codonCount.get(codon);
             if (count >= min && count <= max) {

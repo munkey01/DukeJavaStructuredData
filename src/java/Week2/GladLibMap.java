@@ -64,7 +64,7 @@ public class GladLibMap {
     }
 
     /* Takes story template, calls pickRandomWord() for each tagged word. Replaces word
-     * with return value from pickRandomWord. Include catch for error from pickRandomWord */
+     * with return value from pickRandomWord. */
     public String createStory() {
         StringBuilder story = new StringBuilder();
         for (String word : storyTemplate.split("\\s")) {
@@ -75,6 +75,14 @@ public class GladLibMap {
             }
         }
         return story.toString();
+    }
+
+    public int totalWordsInMap() {
+        int total = 0;
+        for (String wordTypes : wordMap.keySet()) {
+            total += wordMap.get(wordTypes).size();
+        }
+        return total;
     }
 
 }
