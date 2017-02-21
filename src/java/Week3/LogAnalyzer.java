@@ -106,4 +106,21 @@ public class LogAnalyzer
          return mostFrequentIps;
      }
 
+     public HashMap<String, ArrayList<String>> iPsForDays() {
+         HashMap<String, ArrayList<String>> ipVisitsByDay = new HashMap<String, ArrayList<String>>();
+
+         for (LogEntry entry : records) {
+             String date = entry.getAccessTime().toString(); //What format will this be? Include time?
+             String ip = entry.getIpAddress();
+
+             if (!ipVisitsByDay.containsKey(date)) {
+                 ArrayList<String> ipsOnDate = new ArrayList<String>();
+                 ipsOnDate.add(ip);
+                 ipVisitsByDay.put(date, ipsOnDate);
+             } else if (!ipVisitsByDay.get(date).contains(ip)) {
+                 ipVisitsByDay.get(date).add(ip);
+             }
+         }
+         return ipVisitsByDay;
+     }
 }
