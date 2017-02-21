@@ -7,6 +7,8 @@ package src.java.Week3;
  * @version (a version number or a date)
  */
 
+import sun.rmi.runtime.Log;
+
 import java.util.*;
 
 public class Tester
@@ -18,7 +20,8 @@ public class Tester
         //testCountUniqueIPsInRange();
         //testPrintAllHigherThanNum();
         //testCountVisitsPerIp();
-        testMostNumberVisitsByIP();
+        //testMostNumberVisitsByIP();
+        testIpsMostVisits();
     }
 
     public void testLogEntry() {
@@ -64,5 +67,11 @@ public class Tester
     public static void testMostNumberVisitsByIP() {
         LogAnalyzer la = new LogAnalyzer();
         System.out.println(la.mostNumberVisitsByIP(la.countVisitsPerIp()));
+    }
+
+    public static void testIpsMostVisits() {
+        LogAnalyzer la = new LogAnalyzer();
+        HashMap<String, Integer> ipCounts = la.countVisitsPerIp();
+        System.out.println(la.ipsMostVisits(ipCounts));
     }
 }

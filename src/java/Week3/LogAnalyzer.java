@@ -94,5 +94,16 @@ public class LogAnalyzer
          return max;
      }
 
+     public ArrayList<String> ipsMostVisits(HashMap<String, Integer> ipCounts) {
+         int max = 0;
+         ArrayList<String> mostFrequentIps = new ArrayList<>();
+         for (String ip : ipCounts.keySet()) {
+             if (ipCounts.get(ip) >= max) {
+                 max = ipCounts.get(ip);
+                 mostFrequentIps.add(ip);
+             }
+         }
+         return mostFrequentIps;
+     }
 
 }
