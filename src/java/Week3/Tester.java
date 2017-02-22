@@ -21,7 +21,8 @@ public class Tester
         //testPrintAllHigherThanNum();
         //testCountVisitsPerIp();
         //testMostNumberVisitsByIP();
-        testIpsMostVisits();
+        //testIpsMostVisits();
+        testiPsForDays();
     }
 
     public void testLogEntry() {
@@ -73,5 +74,17 @@ public class Tester
         LogAnalyzer la = new LogAnalyzer();
         HashMap<String, Integer> ipCounts = la.countVisitsPerIp();
         System.out.println(la.ipsMostVisits(ipCounts));
+    }
+
+    public static void testiPsForDays() {
+        LogAnalyzer la = new LogAnalyzer();
+        HashMap<String, ArrayList<String>> results = new HashMap<String, ArrayList<String>>();
+        results = la.iPsForDays();
+        for (String date : results.keySet()) {
+            System.out.println(date);
+            for (String ip : results.get(date)) {
+                System.out.println("\t" + ip);
+            }
+        }
     }
 }

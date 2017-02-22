@@ -106,21 +106,24 @@ public class LogAnalyzer
          return mostFrequentIps;
      }
 
+     private String parseDay(String dateStringFromLogEntry) {
+         //Mon Sep 21 07:59:14 EDT 2015
+         return dateStringFromLogEntry.substring(4,10);
+     }
+
      public HashMap<String, ArrayList<String>> iPsForDays() {
-         HashMap<String, ArrayList<String>> ipVisitsByDay = new HashMap<String, ArrayList<String>>();
-
+         HashMap<String, ArrayList<String>> ipsByDay = new HashMap<String, ArrayList<String>>();
          for (LogEntry entry : records) {
-             String date = entry.getAccessTime().toString(); //What format will this be? Include time?
-             String ip = entry.getIpAddress();
-
-             if (!ipVisitsByDay.containsKey(date)) {
-                 ArrayList<String> ipsOnDate = new ArrayList<String>();
-                 ipsOnDate.add(ip);
-                 ipVisitsByDay.put(date, ipsOnDate);
-             } else if (!ipVisitsByDay.get(date).contains(ip)) {
-                 ipVisitsByDay.get(date).add(ip);
+             String dateFromLogEntry = parseDay(entry.getAccessTime().toString());
+             String ipFromLogEntry = entry.getIpAddress();
+             if (ipsByDay.containsKey(dateFromLogEntry) && !(ipsByDay.get(dateFromLogEntry).contains(ipFromLogEntry))) {
+                 ipsByDay.get(dateFromLogEntry).add(ipFromLogEntry);
+             } else if (!ipsByDay.containsKey(dateFromLogEntry)) {
+                 ArrayList<String> ipsOnCurrDate = new ArrayList<>();
+                 ipsOnCurrDate.add(ipFromLogEntry);
+                 ipsByDay.put(dateFromLogEntry, ipsOnCurrDate);
              }
          }
-         return ipVisitsByDay;
+         return ipsByDay;
      }
 }
