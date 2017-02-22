@@ -107,7 +107,7 @@ public class LogAnalyzer
      }
 
      private String parseDay(String dateStringFromLogEntry) {
-         //Mon Sep 21 07:59:14 EDT 2015
+         //Example date entry: Mon Sep 21 07:59:14 EDT 2015
          return dateStringFromLogEntry.substring(4,10);
      }
 
@@ -116,7 +116,7 @@ public class LogAnalyzer
          for (LogEntry entry : records) {
              String dateFromLogEntry = parseDay(entry.getAccessTime().toString());
              String ipFromLogEntry = entry.getIpAddress();
-             if (ipsByDay.containsKey(dateFromLogEntry) && !(ipsByDay.get(dateFromLogEntry).contains(ipFromLogEntry))) {
+             if (ipsByDay.containsKey(dateFromLogEntry)) {
                  ipsByDay.get(dateFromLogEntry).add(ipFromLogEntry);
              } else if (!ipsByDay.containsKey(dateFromLogEntry)) {
                  ArrayList<String> ipsOnCurrDate = new ArrayList<>();
@@ -126,4 +126,51 @@ public class LogAnalyzer
          }
          return ipsByDay;
      }
+
+     public String dayWithMostIPVisits(HashMap<String, ArrayList<String>> ipsByDay) {
+         int max = 0;
+         String dateOfMostVisits = new String();
+         for (String date : ipsByDay.keySet()) {
+             ArrayList<String> ipsOnDate = ipsByDay.get(date);
+             if (ipsOnDate.size() > max) {
+                 max = ipsOnDate.size();
+                 dateOfMostVisits = date;
+             }
+         }
+         return dateOfMostVisits;
+     }
+
+
+     public ArrayList<String> iPsWithMostVisitsOnDay(HashMap<String, ArrayList<String>> ipsByDay, String date) {
+         int maxVisitCount = 0;
+         ArrayList<String> mostFreqIPs = new ArrayList<>();
+         HashMap<String, Integer> visitsByIp = new HashMap<>();
+
+         for (LogEntry entry : records) {
+             String currIp = entry.getIpAddress();
+             if (visitsByIp.containsKey(currIp)) {
+                 int numVisits = visitsByIp.get(currIp);
+                 visitsByIp.put(currIp, ++numVisits);
+             } else {
+                 visitsByIp.put(currIp, 1);
+             }
+         }
+
+         for (String ip : visitsByIp.keySet()) {
+             int numVisitsByIp = visitsByIp.get(ip);
+             if (numVisitsByIp >= maxVisitCount)  {
+                 maxVisitCount =  numVisitsByIp;
+             }
+         }
+
+         for (String ip : visitsByIp.keySet()) {
+             int numVisitsByIp = visitsByIp.get(ip);
+             if  (numVisitsByIp >= maxVisitCount) {
+                 mostFreqIPs.add(ip);
+             }
+         }
+
+         return mostFreqIPs;
+     }
+
 }

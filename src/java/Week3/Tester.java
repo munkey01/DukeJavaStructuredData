@@ -22,7 +22,9 @@ public class Tester
         //testCountVisitsPerIp();
         //testMostNumberVisitsByIP();
         //testIpsMostVisits();
-        testiPsForDays();
+        //testiPsForDays();
+        //testDayWithMostIPVisits();
+        testIPsWithMostVisitsOnDay(); //should return 61.15.121.171 and 177.4.40.87, FAIL
     }
 
     public void testLogEntry() {
@@ -86,5 +88,18 @@ public class Tester
                 System.out.println("\t" + ip);
             }
         }
+    }
+
+    public static void testDayWithMostIPVisits() {
+        LogAnalyzer la = new LogAnalyzer();
+        HashMap<String, ArrayList<String>> ipsByDate = new HashMap<String, ArrayList<String>>();
+        ipsByDate = la.iPsForDays();
+        String result = la.dayWithMostIPVisits(ipsByDate);
+        System.out.println(result);
+    }
+
+    public static void testIPsWithMostVisitsOnDay() {
+        LogAnalyzer la = new LogAnalyzer();
+        System.out.println(la.iPsWithMostVisitsOnDay(la.iPsForDays(), "Sep 30"));
     }
 }
