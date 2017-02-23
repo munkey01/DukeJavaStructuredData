@@ -1,17 +1,19 @@
-package src.java.Week3;
+package Week3;
 
 /**
- * Write a description of class Tester here.
+ * Write a description of class LogAnalyzerTester here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
 
+import src.java.Week3.LogAnalyzer;
+import src.java.Week3.LogEntry;
 import sun.rmi.runtime.Log;
 
 import java.util.*;
 
-public class Tester
+public class LogAnalyzerTester
 {
     public static void main(String[] args) {
         //testLogAnalyzer();
