@@ -143,29 +143,29 @@ public class LogAnalyzer
 
      public ArrayList<String> iPsWithMostVisitsOnDay(HashMap<String, ArrayList<String>> ipsByDay, String date) {
          int maxVisitCount = 0;
+         ArrayList<String> ipsOnDate = ipsByDay.get(date);
          ArrayList<String> mostFreqIPs = new ArrayList<>();
          HashMap<String, Integer> visitsByIp = new HashMap<>();
 
-         for (LogEntry entry : records) {
-             String currIp = entry.getIpAddress();
-             if (visitsByIp.containsKey(currIp)) {
-                 int numVisits = visitsByIp.get(currIp);
-                 visitsByIp.put(currIp, ++numVisits);
+         //map ip's to number of visits on day
+         for (String ip : ipsOnDate) {
+             if (visitsByIp.containsKey(ip)) {
+                 int count = visitsByIp.get(ip);
+                 visitsByIp.put(ip, ++count);
              } else {
-                 visitsByIp.put(currIp, 1);
+                 visitsByIp.put(ip, 1);
+             }
+         }
+
+         //find ips with most visits
+         for (int count : visitsByIp.values()) {
+             if (count >= maxVisitCount) {
+                 maxVisitCount = count;
              }
          }
 
          for (String ip : visitsByIp.keySet()) {
-             int numVisitsByIp = visitsByIp.get(ip);
-             if (numVisitsByIp >= maxVisitCount)  {
-                 maxVisitCount =  numVisitsByIp;
-             }
-         }
-
-         for (String ip : visitsByIp.keySet()) {
-             int numVisitsByIp = visitsByIp.get(ip);
-             if  (numVisitsByIp >= maxVisitCount) {
+             if (visitsByIp.get(ip) == maxVisitCount) {
                  mostFreqIPs.add(ip);
              }
          }

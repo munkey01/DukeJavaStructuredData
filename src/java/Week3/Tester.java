@@ -24,7 +24,7 @@ public class Tester
         //testIpsMostVisits();
         //testiPsForDays();
         //testDayWithMostIPVisits();
-        testIPsWithMostVisitsOnDay(); //should return 61.15.121.171 and 177.4.40.87, FAIL
+        testIPsWithMostVisitsOnDay();
     }
 
     public void testLogEntry() {
@@ -100,6 +100,6 @@ public class Tester
 
     public static void testIPsWithMostVisitsOnDay() {
         LogAnalyzer la = new LogAnalyzer();
-        System.out.println(la.iPsWithMostVisitsOnDay(la.iPsForDays(), "Sep 30"));
+        System.out.println(la.iPsWithMostVisitsOnDay(la.iPsForDays(), "Mar 17"));
     }
 }
