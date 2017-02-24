@@ -31,7 +31,8 @@ public class VigenereBreaker {
     }
 
     public String breakVigenere(int keyLength, FileResource fr) {
-        return breakVigenere(keyLength, fr.asString());
+        String encryptedMessage = fr.asString();
+        return breakVigenere(keyLength, encryptedMessage);
     }
 
     public String breakVigenere(int keyLength, String encryptedMessage) {
@@ -66,16 +67,23 @@ public class VigenereBreaker {
     public String breakForLanguage(String encrypted, HashSet<String> dictionary) {
         String bestGuessDecrypted = new String();
         int maxValidWord = 0;
-
-        for (int i = 0; i < 100; i++) {
+        int bestGuessKeyLength = 0;
+        int finalValidWordCount = 0;
+        for (int i = 1; i < 100; i++) {
             String result = breakVigenere(i, encrypted);
             int validWordCount = countWords(result, dictionary);
 
             if (validWordCount > maxValidWord) {
                 maxValidWord = validWordCount;
                 bestGuessDecrypted = result;
+                bestGuessKeyLength = i;
+                finalValidWordCount = validWordCount;
             }
         }
+
+        System.out.println("Best guess key length: " + bestGuessKeyLength +
+                "\nValid word count: " + finalValidWordCount +
+                "\n\n---------------------\n");
 
         return bestGuessDecrypted;
     }
