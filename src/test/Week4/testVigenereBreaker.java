@@ -3,6 +3,9 @@ package Week4;
 import edu.duke.FileResource;
 import src.java.Week4.VigenereBreaker;
 
+import java.io.File;
+import java.util.HashSet;
+
 /**
  * Created by jgrant on 2/23/2017.
  */
@@ -10,8 +13,9 @@ import src.java.Week4.VigenereBreaker;
 public class testVigenereBreaker {
 
     public static void main(String[] args) {
-        testTryKeyLength();
-        testBreakVigenere();
+        //testTryKeyLength();
+        //testBreakVigenere();
+        testBreakForLanguage();
     }
 
     public static void testBreakVigenere() {
@@ -27,6 +31,15 @@ public class testVigenereBreaker {
         for (int i : key) {
             System.out.print(i + " ");
         }
+    }
+
+    public static void testBreakForLanguage() {
+        VigenereBreaker vb = new VigenereBreaker();
+        FileResource dictionaryFile = new FileResource();
+        HashSet<String> dictionary = vb.readDictionary(dictionaryFile);
+        FileResource encryptedMessageFile = new FileResource();
+        String encryptedMessage = encryptedMessageFile.asString();
+        System.out.println(vb.breakForLanguage(encryptedMessage, dictionary));
     }
 
 }

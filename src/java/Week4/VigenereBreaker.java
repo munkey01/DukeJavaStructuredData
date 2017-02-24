@@ -25,13 +25,59 @@ public class VigenereBreaker {
         return key;
     }
 
-    public void breakVigenere(int keyLength) {
-        FileResource file = new FileResource();
-        String encryptedMessage = file.asString();
-        int[] key = tryKeyLength(encryptedMessage, keyLength, 'e');
-
-        VigenereCipher vc = new VigenereCipher(key);
-        System.out.println(vc.decrypt(encryptedMessage));
+    public String breakVigenere(int keyLength) {
+        FileResource fr = new FileResource();
+        return breakVigenere(keyLength, fr);
     }
-    
+
+    public String breakVigenere(int keyLength, FileResource fr) {
+        return breakVigenere(keyLength, fr.asString());
+    }
+
+    public String breakVigenere(int keyLength, String encryptedMessage) {
+        int[] key = tryKeyLength(encryptedMessage, keyLength, 'e');
+        VigenereCipher vc = new VigenereCipher(key);
+        String decryptedMessage = vc.decrypt(encryptedMessage);
+        return decryptedMessage;
+    }
+
+    public HashSet<String> readDictionary(FileResource fr) {
+        HashSet<String> words = new HashSet<>();
+
+        for (String word : fr.lines()) {
+            words.add(word.toLowerCase());
+        }
+
+        return words;
+    }
+
+    public int countWords(String message, HashSet<String> dictionary) {
+        int validWordCount = 0;
+
+        for (String word : message.split("\\W+")) {
+            if (dictionary.contains(word.toLowerCase())) {
+                validWordCount++;
+            }
+        }
+
+        return validWordCount;
+    }
+
+    public String breakForLanguage(String encrypted, HashSet<String> dictionary) {
+        String bestGuessDecrypted = new String();
+        int maxValidWord = 0;
+
+        for (int i = 0; i < 100; i++) {
+            String result = breakVigenere(i, encrypted);
+            int validWordCount = countWords(result, dictionary);
+
+            if (validWordCount > maxValidWord) {
+                maxValidWord = validWordCount;
+                bestGuessDecrypted = result;
+            }
+        }
+
+        return bestGuessDecrypted;
+    }
+
 }
