@@ -1,3 +1,5 @@
+/* File created by Duke University */
+
 package src.java.Week3;
 
 import java.text.*;

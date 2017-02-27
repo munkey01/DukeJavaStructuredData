@@ -1,10 +1,6 @@
+/* File created by Duke University */
+
 package src.java.Week3;
-/**
- * Write a description of class LogRecord here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 
 import  java.util.*;
 public class LogEntry

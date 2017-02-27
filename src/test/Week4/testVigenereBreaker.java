@@ -4,6 +4,7 @@ import edu.duke.FileResource;
 import src.java.Week4.VigenereBreaker;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -15,7 +16,9 @@ public class testVigenereBreaker {
     public static void main(String[] args) {
         //testTryKeyLength();
         //testBreakVigenere();
-        testBreakForLanguage();
+        //testBreakForLanguage();
+        //testMostCommonCharIn();
+        testBreakAllLanguages();
     }
 
     public static void testBreakVigenere() {
@@ -40,6 +43,23 @@ public class testVigenereBreaker {
         FileResource encryptedMessageFile = new FileResource();
         String encryptedMessage = encryptedMessageFile.asString();
         System.out.println(vb.breakForLanguage(encryptedMessage, dictionary));
+    }
+
+    public static void testMostCommonCharIn() {
+        VigenereBreaker vb = new VigenereBreaker();
+        FileResource fr = new FileResource();
+        HashSet<String> dictionary = vb.readDictionary(fr);
+        System.out.println("Most common letter in : Italian " + vb.mostCommonCharIn(dictionary));
+    }
+
+    public static void testBreakAllLanguages() {
+        VigenereBreaker vb = new VigenereBreaker();
+        System.out.println("Choose the encrypted file.");
+        FileResource encryptedFile = new FileResource();
+        String encryptedMessage = encryptedFile.asString();
+        System.out.println("Choose appropriate dictionary files.");
+        HashMap<String, HashSet<String>> allDictionaries = vb.readAllDictionaries();
+        vb.breakForAllLanguages(encryptedMessage, allDictionaries);
     }
 
 }

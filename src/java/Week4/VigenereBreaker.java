@@ -1,11 +1,14 @@
 package src.java.Week4;
 
+import java.io.File;
 import java.util.*;
 import edu.duke.*;
 
 public class VigenereBreaker {
+
     public String sliceString(String message, int whichSlice, int totalSlices) {
         StringBuilder currStrSlice = new StringBuilder();
+
         for (int i = whichSlice; i < message.length(); i += totalSlices) {
             char currChar = message.charAt(i);
             currStrSlice.append(currChar);
@@ -32,12 +35,17 @@ public class VigenereBreaker {
 
     public String breakVigenere(int keyLength, FileResource fr) {
         String encryptedMessage = fr.asString();
-        return breakVigenere(keyLength, encryptedMessage);
+        return breakVigenere(keyLength, encryptedMessage, 'e');
     }
 
     public String breakVigenere(int keyLength, String encryptedMessage) {
-        int[] key = tryKeyLength(encryptedMessage, keyLength, 'e');
+        return breakVigenere(keyLength, encryptedMessage, 'e');
+    }
+
+    public String breakVigenere(int keyLength, String encryptedMessage, char mostCommonLetter) {
+        int[] key = tryKeyLength(encryptedMessage, keyLength, mostCommonLetter);
         VigenereCipher vc = new VigenereCipher(key);
+
         String decryptedMessage = vc.decrypt(encryptedMessage);
         return decryptedMessage;
     }
@@ -50,6 +58,19 @@ public class VigenereBreaker {
         }
 
         return words;
+    }
+
+    public HashMap<String, HashSet<String>> readAllDictionaries() {
+        HashMap<String, HashSet<String>> allDictionaries = new HashMap<>();
+        DirectoryResource dictionaryFiles = new DirectoryResource();
+
+        for (File dictionary : dictionaryFiles.selectedFiles()) {
+            HashSet<String> dictContents = readDictionary(new FileResource(dictionary));
+            String language = dictionary.getName();
+            allDictionaries.put(language, dictContents);
+        }
+
+        return allDictionaries;
     }
 
     public int countWords(String message, HashSet<String> dictionary) {
@@ -69,8 +90,10 @@ public class VigenereBreaker {
         int maxValidWord = 0;
         int bestGuessKeyLength = 0;
         int finalValidWordCount = 0;
+        char mostCommonLetter = mostCommonCharIn(dictionary);
+
         for (int i = 1; i < 100; i++) {
-            String result = breakVigenere(i, encrypted);
+            String result = breakVigenere(i, encrypted, mostCommonLetter);
             int validWordCount = countWords(result, dictionary);
 
             if (validWordCount > maxValidWord) {
@@ -86,6 +109,56 @@ public class VigenereBreaker {
                 "\n\n---------------------\n");
 
         return bestGuessDecrypted;
+    }
+
+    public char mostCommonCharIn(HashSet<String> dictionary) {
+        HashMap<Character, Integer> letterCounts = new HashMap<>();
+        Character mostFreqLetter = 'e';
+        int maxLetterCount = 0;
+
+        for (String word : dictionary) {
+            for (char letter : word.toLowerCase().toCharArray()) {
+                Character letterObj = letter;
+                if (!letterCounts.containsKey(letterObj)) {
+                    letterCounts.put(letterObj, 1);
+                } else {
+                    int currentCount = letterCounts.get(letterObj);
+                    letterCounts.put(letterObj, ++currentCount);
+                }
+            }
+        }
+
+        for (Character letter : letterCounts.keySet()) {
+            int currentCount = letterCounts.get(letter);
+            if (currentCount > maxLetterCount) {
+                maxLetterCount = currentCount;
+                mostFreqLetter = letter;
+            }
+        }
+
+        return mostFreqLetter.charValue();
+    }
+
+    public void breakForAllLanguages(String encrypted, HashMap<String, HashSet<String>> allDictionaries) {
+        String languageGuess = "";
+        String decryptedMessage = "";
+        int maxValidWords = 0;
+
+        for (String language : allDictionaries.keySet()) {
+            HashSet<String> currentDictionary = allDictionaries.get(language);
+            String decryptionResult = breakForLanguage(encrypted, currentDictionary);
+            int validWords = countWords(decryptionResult, currentDictionary);
+
+            if (validWords > maxValidWords) {
+                maxValidWords = validWords;
+                languageGuess = language;
+                decryptedMessage = decryptionResult;
+            }
+        }
+
+        System.out.println("Best guess language: " + languageGuess);
+        System.out.println("\nBest guess decryption: " + decryptedMessage);
+
     }
 
 }
